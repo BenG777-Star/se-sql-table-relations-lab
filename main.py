@@ -6,11 +6,12 @@ conn = sqlite3.connect('data.sqlite')
 
 # Part 1: Join and Filter
 df_boston = pd.read_sql("""
-SELECT e.firstName, e.lastName, e.jobTitle
+SELECT e.firstName, e.lastName
 FROM employees e
 JOIN offices o ON e.officeCode = o.officeCode
 WHERE o.city = 'Boston';
 """, conn)
+
 
 df_zero_emp = pd.read_sql("""
 SELECT o.officeCode, o.city
@@ -95,8 +96,10 @@ WHERE od.productCode IN (
     JOIN orders o2 ON od2.orderNumber = o2.orderNumber
     GROUP BY od2.productCode
     HAVING COUNT(DISTINCT o2.customerNumber) < 20
-);
+)
+ORDER BY e.firstName ASC;
 """, conn)
+
 
 # Close connection
 conn.close()
